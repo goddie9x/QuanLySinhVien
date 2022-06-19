@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -65,6 +66,9 @@ namespace GUI
             {
                 subjectSelects.SelectedItem = curExam.SubjectId;
                 TimeOutBox.Text = curExam.GetTimeOutText();
+                ExamNameField.Text = curExam.examName;
+                subjectSelects.SelectedItem = subjects.FirstOrDefault(s=>s.subjectId == curExam.SubjectId).subjectName;
+                TypeSelect.SelectedIndex = curExam.type;
                 GetAllQuestion();
             }
             else

@@ -30,17 +30,17 @@ namespace GUI
         private void InitializeComponent()
         {
             this.ExamGrid = new System.Windows.Forms.DataGridView();
-            this.idCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SubjectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeOutCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.examNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TypeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExamIdField = new System.Windows.Forms.TextBox();
             this.HandleExamIDBtn = new System.Windows.Forms.Button();
             this.ExamIdlabel = new System.Windows.Forms.Label();
             this.ExamIDPanel = new System.Windows.Forms.Panel();
             this.CreateBtn = new System.Windows.Forms.Button();
             this.HomeBtn = new System.Windows.Forms.Button();
+            this.idCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubjectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeOutCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.examNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.ExamGrid)).BeginInit();
             this.ExamIDPanel.SuspendLayout();
             this.SuspendLayout();
@@ -59,37 +59,7 @@ namespace GUI
             this.ExamGrid.RowHeadersVisible = false;
             this.ExamGrid.Size = new System.Drawing.Size(748, 363);
             this.ExamGrid.TabIndex = 6;
-            // 
-            // idCol
-            // 
-            this.idCol.HeaderText = "id";
-            this.idCol.Name = "idCol";
-            this.idCol.Visible = false;
-            this.idCol.Width = 200;
-            // 
-            // SubjectCol
-            // 
-            this.SubjectCol.HeaderText = "Subject";
-            this.SubjectCol.Name = "SubjectCol";
-            this.SubjectCol.Width = 200;
-            // 
-            // timeOutCol
-            // 
-            this.timeOutCol.HeaderText = "time out";
-            this.timeOutCol.Name = "timeOutCol";
-            this.timeOutCol.Width = 200;
-            // 
-            // examNameCol
-            // 
-            this.examNameCol.HeaderText = "Exam name";
-            this.examNameCol.Name = "examNameCol";
-            this.examNameCol.Width = 200;
-            // 
-            // TypeCol
-            // 
-            this.TypeCol.HeaderText = "Type";
-            this.TypeCol.Name = "TypeCol";
-            this.TypeCol.Width = 200;
+            this.ExamGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ExamGrid_CellClick);
             // 
             // ExamIdField
             // 
@@ -148,6 +118,36 @@ namespace GUI
             this.HomeBtn.UseVisualStyleBackColor = true;
             this.HomeBtn.Click += new System.EventHandler(this.HomeBtn_Click);
             // 
+            // idCol
+            // 
+            this.idCol.HeaderText = "id";
+            this.idCol.Name = "idCol";
+            this.idCol.Width = 20;
+            // 
+            // SubjectCol
+            // 
+            this.SubjectCol.HeaderText = "Subject";
+            this.SubjectCol.Name = "SubjectCol";
+            this.SubjectCol.Width = 200;
+            // 
+            // timeOutCol
+            // 
+            this.timeOutCol.HeaderText = "time out";
+            this.timeOutCol.Name = "timeOutCol";
+            this.timeOutCol.Width = 180;
+            // 
+            // examNameCol
+            // 
+            this.examNameCol.HeaderText = "Exam name";
+            this.examNameCol.Name = "examNameCol";
+            this.examNameCol.Width = 200;
+            // 
+            // TypeCol
+            // 
+            this.TypeCol.HeaderText = "Type";
+            this.TypeCol.Name = "TypeCol";
+            this.TypeCol.Width = 180;
+            // 
             // ExamManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,16 +173,16 @@ namespace GUI
         #endregion
 
         private System.Windows.Forms.DataGridView ExamGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn timeOutCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn examNameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TypeCol;
         private System.Windows.Forms.TextBox ExamIdField;
         private System.Windows.Forms.Button HandleExamIDBtn;
         private System.Windows.Forms.Label ExamIdlabel;
         private System.Windows.Forms.Panel ExamIDPanel;
         private System.Windows.Forms.Button CreateBtn;
         private System.Windows.Forms.Button HomeBtn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeOutCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn examNameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypeCol;
     }
 }

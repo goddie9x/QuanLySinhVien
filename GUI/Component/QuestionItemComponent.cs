@@ -392,6 +392,23 @@ namespace GUI.Component
         private QuestionItemInfo questionItemInfo;
         private string truthRadioAnswer;
         private string truthCheckboxAnswers;
+        private bool isSingleSelect = false;
+        public bool IsSingleSlect
+        {
+            get { return isSingleSelect; }
+            set
+            {
+                this.isSingleSelect = value;
+                AnswerARadio.Visible = isSingleSelect;
+                AnswerBRadio.Visible = isSingleSelect;
+                AnswerCRadio.Visible = isSingleSelect;
+                AnswerDRadio.Visible = isSingleSelect;
+                AnswerACheckbox.Visible = !isSingleSelect;
+                AnswerBCheckbox.Visible = !isSingleSelect;
+                AnswerCCheckbox.Visible = !isSingleSelect;
+                AnswerDCheckbox.Visible = !isSingleSelect;
+            }
+        }
         public bool IsAnswering
         {
             get { return isAnswering; }
@@ -422,6 +439,9 @@ namespace GUI.Component
             InitQuestionItemWithInfo();
             InitRadioAnswerButtons();
             this.labelQuestion.Text = "Question" + questionItemInfo.index + ":";
+            IsSingleSlect = questionItemInfo.radioAnswer != "";
+            SingleTypeRadio.Checked = isSingleSelect;
+            MultipleTypeRadio.Checked = !isSingleSelect;
             if (!isAnswering)
             {
                 SetSelectedValue();
@@ -468,26 +488,12 @@ namespace GUI.Component
         }
         private void SingleTypeRadio_CheckedChanged(object sender, System.EventArgs e)
         {
-            AnswerARadio.Visible = true;
-            AnswerBRadio.Visible = true;
-            AnswerCRadio.Visible = true;
-            AnswerDRadio.Visible = true;
-            AnswerACheckbox.Visible = false;
-            AnswerBCheckbox.Visible = false;
-            AnswerCCheckbox.Visible = false;
-            AnswerDCheckbox.Visible = false;
+            IsSingleSlect = true;
         }
 
         private void MultipleTypeRadio_CheckedChanged(object sender, System.EventArgs e)
         {
-            AnswerARadio.Visible = false;
-            AnswerBRadio.Visible = false;
-            AnswerCRadio.Visible = false;
-            AnswerDRadio.Visible = false;
-            AnswerACheckbox.Visible = true;
-            AnswerBCheckbox.Visible = true;
-            AnswerCCheckbox.Visible = true;
-            AnswerDCheckbox.Visible = true;
+            IsSingleSlect = false;
         }
 
         private void QuestionBox_TextChanged(object sender, System.EventArgs e)

@@ -37,14 +37,17 @@ namespace GUI
         {
 
         }
-
+        private void OpenExamForm(string examId)
+        {
+            ExamForm examForm = new ExamForm(examId);
+            this.Hide();
+            examForm.ShowDialog();
+        }
         private void HandleExamIDBtn_Click(object sender, EventArgs e)
         {
             if (isStudent)
             {
-                ExamForm examForm = new ExamForm(ExamIdField.Text);
-                this.Hide();
-                examForm.ShowDialog();
+                OpenExamForm(ExamIdField.Text);
             }
             else
             {
@@ -107,6 +110,11 @@ namespace GUI
             }
             Home.instance.Show();
             this.Hide();
+        }
+
+        private void ExamGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            OpenExamForm(examsCreatedByCurrentAccount[e.RowIndex].id);
         }
     }
 }
