@@ -439,9 +439,7 @@ namespace GUI.Component
             InitQuestionItemWithInfo();
             InitRadioAnswerButtons();
             this.labelQuestion.Text = "Question" + questionItemInfo.index + ":";
-            IsSingleSlect = questionItemInfo.radioAnswer != "";
-            SingleTypeRadio.Checked = isSingleSelect;
-            MultipleTypeRadio.Checked = !isSingleSelect;
+            HandleShowQuestionTypeVisibleChanged();
             if (!isAnswering)
             {
                 SetSelectedValue();
@@ -486,14 +484,20 @@ namespace GUI.Component
             AnswerCTextbox.Text = ListAswers[2];
             AnswerDTextbox.Text = ListAswers[3];
         }
+        private void HandleShowQuestionTypeVisibleChanged()
+        {
+            IsSingleSlect = questionItemInfo.radioAnswer != "";
+            SingleTypeRadio.Checked = isSingleSelect;
+            MultipleTypeRadio.Checked = !isSingleSelect;
+        }
         private void SingleTypeRadio_CheckedChanged(object sender, System.EventArgs e)
         {
-            IsSingleSlect = true;
+            IsSingleSlect = SingleTypeRadio.Checked;
         }
 
         private void MultipleTypeRadio_CheckedChanged(object sender, System.EventArgs e)
         {
-            IsSingleSlect = false;
+            IsSingleSlect = !MultipleTypeRadio.Checked;
         }
 
         private void QuestionBox_TextChanged(object sender, System.EventArgs e)
