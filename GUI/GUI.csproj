@@ -44,6 +44,9 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
+    <Reference Include="Aspose.Cells, Version=8.7.2.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Cells.8.7.2\lib\net40\Aspose.Cells.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV.Bitmap, Version=4.4.0.4061, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\Emgu.CV.Bitmap.4.4.0.4061\lib\netstandard2.0\Emgu.CV.Bitmap.dll</HintPath>
     </Reference>
@@ -55,6 +58,15 @@
     </Reference>
     <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.GLControl.1.1.2225.0\lib\net20\OpenTK.GLControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Compression.Base, Version=20.1460.0.56, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Compression.Base.20.1.0.56\lib\net46\Syncfusion.Compression.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=20.1460.0.56, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.20.1.0.56\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.XlsIO.Base, Version=20.1460.0.56, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.XlsIO.WinForms.20.1.0.56\lib\net46\Syncfusion.XlsIO.Base.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -91,6 +103,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalysisTerm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnalysisTerm.Designer.cs">
+      <DependentUpon>AnalysisTerm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Component\QuestionItemComponent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ExamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExamForm.Designer.cs">
+      <DependentUpon>ExamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExamManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExamManager.Designer.cs">
+      <DependentUpon>ExamManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,11 +144,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HandleStudent.cs">
+    <Compile Include="StudentInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HandleStudent.Designer.cs">
-      <DependentUpon>HandleStudent.cs</DependentUpon>
+    <Compile Include="StudentInfo.Designer.cs">
+      <DependentUpon>StudentInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="StudentManagement.cs">
       <SubType>Form</SubType>
@@ -123,6 +156,15 @@
     <Compile Include="StudentManagement.Designer.cs">
       <DependentUpon>StudentManagement.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AnalysisTerm.resx">
+      <DependentUpon>AnalysisTerm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamForm.resx">
+      <DependentUpon>ExamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamManager.resx">
+      <DependentUpon>ExamManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,8 +184,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="HandleStudent.resx">
-      <DependentUpon>HandleStudent.cs</DependentUpon>
+    <EmbeddedResource Include="StudentInfo.resx">
+      <DependentUpon>StudentInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StudentManagement.resx">
       <DependentUpon>StudentManagement.cs</DependentUpon>
@@ -167,6 +209,10 @@
     <ProjectReference Include="..\BUS\BUS.csproj">
       <Project>{61189f4e-ade9-48b8-8e5c-524689a821db}</Project>
       <Name>BUS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{2CCF9E2F-B871-4B0C-8788-E9FA7EB24A94}</Project>
+      <Name>DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{b3c3de5f-3893-442e-91c1-945150f139b7}</Project>

@@ -49,6 +49,7 @@ namespace GUI
             this.btnAddPerson = new System.Windows.Forms.Button();
             this.picturePreviewMin = new System.Windows.Forms.PictureBox();
             this.btnTrain = new System.Windows.Forms.Button();
+            this.BackHomeBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imagePrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDetected)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePreviewMin)).BeginInit();
@@ -217,11 +218,22 @@ namespace GUI
             this.btnTrain.UseVisualStyleBackColor = true;
             this.btnTrain.Click += new System.EventHandler(this.btnTrain_Click);
             // 
+            // BackHomeBtn
+            // 
+            this.BackHomeBtn.Location = new System.Drawing.Point(788, 59);
+            this.BackHomeBtn.Name = "BackHomeBtn";
+            this.BackHomeBtn.Size = new System.Drawing.Size(75, 60);
+            this.BackHomeBtn.TabIndex = 21;
+            this.BackHomeBtn.Text = "Home";
+            this.BackHomeBtn.UseVisualStyleBackColor = true;
+            this.BackHomeBtn.Click += new System.EventHandler(this.BackHomeBtn_Click);
+            // 
             // Pesentation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(897, 450);
+            this.Controls.Add(this.BackHomeBtn);
             this.Controls.Add(this.btnTrain);
             this.Controls.Add(this.picturePreviewMin);
             this.Controls.Add(this.btnAddPerson);
@@ -241,8 +253,11 @@ namespace GUI
             this.Controls.Add(this.studentNameField);
             this.Controls.Add(this.PesentBtn);
             this.Name = "Pesentation";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pesentation";
+            this.Activated += new System.EventHandler(this.Pesentation_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Pesentation_Close);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Pesentation_FormClosed);
             this.Load += new System.EventHandler(this.Pesentation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imagePrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDetected)).EndInit();
@@ -272,5 +287,6 @@ namespace GUI
         private Button btnAddPerson;
         private PictureBox picturePreviewMin;
         private Button btnTrain;
+        private Button BackHomeBtn;
     }
 }

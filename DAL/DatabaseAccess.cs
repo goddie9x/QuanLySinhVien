@@ -50,11 +50,19 @@ namespace DAL
         }
         public static DataTable GetAllStudentsDataTable()
         {
-            SqlConnection conn = SqlConnectionData.Connect();
-            SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT * FROM Student ", conn);
-            DataTable dt = new DataTable();
-            dataAdapter.Fill(dt);
-            return dt;
+            DataTable students = new DataTable();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "SELECT * FROM Student";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                SqlDataAdapter sqlData = new SqlDataAdapter(command);
+                sqlData.Fill(students);
+            }
+            catch (SqlException e)
+            {
+            }
+            return students;
         }
         public static List<Student> GetAllStudents()
         {
@@ -107,6 +115,7 @@ namespace DAL
                 student.gender = Convert.ToInt32( oReader["Gender"].ToString());
                 students.Add(student);
             }
+            conn.Close();
             return students;
         }
         public static bool UpdateStudentInfo(Student student)
@@ -123,6 +132,7 @@ namespace DAL
                 command.Parameters.AddWithValue("@ClassId", student.classId);
                 conn.Open();
                 command.ExecuteReader();
+                conn.Close();
                 return true;
             }
             catch(SqlException e)
@@ -136,33 +146,15 @@ namespace DAL
             try
             {
                 SqlConnection conn = SqlConnectionData.Connect();
-                string queryString = "delete from Transcript where StudentId = @deleteId";
-                string q1 = " delete from Presentation where StudentId = @deleteId";
-                string q2 = "delete from Learning where StudentId = @deleteId";
-                string q3 = "delete from Student where StudentId = @deleteId";
-                SqlCommand command = new SqlCommand(queryString, conn);
-                SqlCommand command1 = new SqlCommand(q1, conn);
-                SqlCommand command2 = new SqlCommand(q2, conn);
-                SqlCommand command3 = new SqlCommand(q3, conn);
+                string queryString = "delete from Transcript where StudentId = @deleteId ;"
+                    + "  delete from Presentation where StudentId = @deleteId ;"
+                    + "  delete from Learning where StudentId = @deleteId ;"
+                    + "  delete from Student where StudentId = @deleteId ;";
+                SqlCommand command = new SqlCommand(queryString, conn);;
                 command.Parameters.AddWithValue("@deleteId", student.studentId);
-                command1.Parameters.AddWithValue("@deleteId", student.studentId);
-                command2.Parameters.AddWithValue("@deleteId", student.studentId);
-                command3.Parameters.AddWithValue("@deleteId", student.studentId);
-
                 conn.Open();
                 command.ExecuteReader();
                 conn.Close();
-                conn.Open();
-                command1.ExecuteReader();
-                conn.Close();
-                conn.Open();
-                command2.ExecuteReader();
-                conn.Close();
-                conn.Open();
-                command3.ExecuteReader();
-                conn.Close();
-
-
                 return true;
             }
             catch (SqlException e)
@@ -185,6 +177,7 @@ namespace DAL
                 command.Parameters.AddWithValue("@ClassId", student.classId);
                 conn.Open();
                 command.ExecuteReader();
+                conn.Close();
                 return true;
             }
             catch (SqlException e)
@@ -213,6 +206,7 @@ namespace DAL
                 student.studentId = oReader["StudentId"].ToString();
                 student.studentName = oReader["StudentName"].ToString();
                 student.gender = Convert.ToInt32(oReader["Gender"].ToString());
+                conn.Close();
             }
             catch (SqlException e)
             {
@@ -226,13 +220,11 @@ namespace DAL
             {
                 SqlConnection conn = SqlConnectionData.Connect();
                 string sqlFormattedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                string queryString = "INSERT INTO Presentation VALUES (@StudentId, @SubjectId, @time)";
+                string queryString = "INSERT INTO Presentation VALUES (\'"+ studentID+"\',\'"+ subjectID + "\',\'" + sqlFormattedDate+"\')";
                 SqlCommand command = new SqlCommand(queryString, conn);
-                command.Parameters.AddWithValue("@StudentId", studentID);
-                command.Parameters.AddWithValue("@SubjectId", subjectID);
-                command.Parameters.AddWithValue("@time", sqlFormattedDate);
                 conn.Open();
                 command.ExecuteReader();
+                conn.Close();
                 return true;
             }
             catch (SqlException e)
@@ -240,7 +232,24 @@ namespace DAL
                 return false;
             }
         }
-        public static List<Subject>GetAllSubject()
+        public static DataTable GetAllSubjectDataTable()
+        {
+            DataTable subjects = new DataTable();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "SELECT * FROM Subject";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                SqlDataAdapter sqlData = new SqlDataAdapter(command);
+                sqlData.Fill(subjects);
+                conn.Close();
+            }
+            catch (SqlException e)
+            {
+            }
+            return subjects;
+        }
+        public static List<Subject> GetAllSubject()
         {
             List<Subject> subjects = new List<Subject>();
             try
@@ -253,18 +262,313 @@ namespace DAL
                 while (oReader.Read())
                 {
                     Subject subject = new Subject();
+
                     subject.subjectName = oReader["SubjectName"].ToString();
-                    subject.time = oReader["Time"].ToString();
+                    subject.timeStart = oReader["TimeStart"].ToString();
+                    subject.timeEnd = oReader["TimeEnd"].ToString();
                     subject.dayOfWeek = Convert.ToInt32(oReader["DayOfWeek"].ToString());
                     subject.subjectId = oReader["SubjectId"].ToString();
-
                     subjects.Add(subject);
                 }
+
+                conn.Close();
             }
             catch (SqlException e)
             {
             }
             return subjects;
+        }
+        public static DataTable GetTransctriptByQuery(string query)
+        {
+            DataTable subjects = new DataTable();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select LeaningId,SubjectName,DayOfWeek,TimeStart,TimeEnd,StudentName"
+                    + ",ClassName,PointMid,PointEnd,AmountPesented,AmountPesentedLate from Learning "
+                    + " inner join Student on Learning.StudentId = Student.StudentId "
+                    + " inner join Subject on Subject.SubjectId = Learning.SubjectId "
+                    + " inner join Class on Class.ClassId = Student.ClassId where "+ query;
+                SqlCommand command = new SqlCommand(queryString, conn);
+                SqlDataAdapter sqlData = new SqlDataAdapter(command);
+                sqlData.Fill(subjects);
+                conn.Close();
+            }
+            catch (SqlException e)
+            {
+            }
+        return subjects;
+        } 
+
+        public static bool Pesent(string StudentId, string SubjectId,bool isLate = false)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "UPDATE Learning SET ";
+                if (isLate)
+                {
+                    queryString+="AmountPesented = AmountPesented + 1 WHERE StudentId = @StudentId and SubjectId = @SubjectId";
+                }
+                else
+                {
+                    queryString += "AmountPesentedLate = AmountPesentedLate + 1 WHERE StudentId = @StudentId and SubjectId = @SubjectId";
+                }
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@StudentId", StudentId);
+                command.Parameters.AddWithValue("@SubjectId", SubjectId);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
+        }
+        public static string[] GetUniversityInfo()
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select top 1 * from UniversityInfo";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                conn.Open();
+                SqlDataReader oReader = command.ExecuteReader();
+                oReader.Read();
+                string[]univerInfo = new string[] { 
+                    oReader["UniversityName"].ToString(),
+                    oReader["UniversityShortName"].ToString(),
+                    oReader["YeahEstablish"].ToString()
+                };
+                conn.Close();
+                return univerInfo;
+            }
+            catch (SqlException e)
+            {
+                return null;
+            }
+        }
+        //pointType: PointMid, PointEnd
+        public static bool EditPoint(string LearningId,string pointType,int point)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "update TOP (1) Learning set Learning."+ pointType+" = @point where LeaningId = @LearningId";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@LearningId", LearningId);
+                command.Parameters.AddWithValue("@point", point);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
+        public static bool SetExamPoint(string SubjectId, string Semester, int termType, int point, string sAccountID, string ExamId)
+        {
+            string pointType = termType == 0 ? "PointMid" : "PointEnd";
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "update TOP (1) Learning set Learning." + pointType + " = @point where SubjectId" +
+                    " = @SubjectId and Semester = @Semester ;  insert into TookExam values (@sAccountID,@ExamId)";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@SubjectId", SubjectId);
+                command.Parameters.AddWithValue("@Semester", Semester);
+                command.Parameters.AddWithValue("@point", point);
+                command.Parameters.AddWithValue("@sAccountID", sAccountID);
+                command.Parameters.AddWithValue("@ExamId", ExamId);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
+        public static Exam GetExamById(string ExamId)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select top(1)* from Exam where id = @ExamId";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@ExamId", ExamId);
+                conn.Open();
+                SqlDataReader oReader = command.ExecuteReader();
+                oReader.Read();
+                Exam exam = new Exam(oReader["id"].ToString(), oReader["SubjectId"].ToString(), oReader["timeOut"].ToString(),
+                    oReader["examName"].ToString(), oReader["type"].ToString(), oReader["sAccountID"].ToString(),oReader["Semester"].ToString());
+                conn.Close();
+                return exam;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return null;
+            }
+        }
+        public static bool CheckUserTookExam(string sAccountID,string ExamId)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select top(1)* from TookExam where sAccountID = @sAccountID and ExamId = @ExamId";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@ExamId", ExamId);
+                command.Parameters.AddWithValue("@sAccountID", sAccountID);
+                conn.Open();
+                return command.ExecuteScalar() != null;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
+        public static List<Exam> GetAllExamCreatedByAccountID(string sAccountID)
+        {
+            List<Exam> Exams = new List<Exam>();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select * from Exam where sAccountID = @sAccountID";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@sAccountID", sAccountID);
+                conn.Open();
+                SqlDataReader oReader = command.ExecuteReader();
+                while (oReader.Read())
+                {
+                    Exam crrExam  = new Exam(oReader["id"].ToString(), oReader["SubjectId"].ToString(), oReader["timeOut"].ToString(),
+                    oReader["examName"].ToString(), oReader["type"].ToString(), oReader["sAccountID"].ToString(), oReader["Semester"].ToString());
+                    Exams.Add(crrExam);
+                }
+
+                conn.Close();
+                return Exams;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return Exams;
+            }
+        }
+        public static List<QuestionItemInfo> GetQuestionItemInfosByExamId(string ExamId)
+        {
+            List<QuestionItemInfo> questionItemInfos = new List<QuestionItemInfo>();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select * from Question where ExamId = @ExamId order by questionIndex DESC";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@ExamId", ExamId);
+                conn.Open();
+                SqlDataReader oReader = command.ExecuteReader();
+                while (oReader.Read())
+                {
+                    QuestionItemInfo questionItemInfo = new QuestionItemInfo(
+                        oReader["id"].ToString(),
+                        oReader["ExamId"].ToString(),
+                        oReader["question"].ToString(),
+                        oReader["answers"].ToString(),
+                        oReader["radioAnswer"].ToString(),
+                        oReader["checkBoxAnswers"].ToString(),
+                        oReader["questionIndex"].ToString()
+                        );
+                    questionItemInfos.Add(questionItemInfo);
+                }
+                conn.Close();
+                return questionItemInfos;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return questionItemInfos;
+            }
+        }
+        public static string CreateExam(Exam exam)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "insert into Exam output inserted.id values(@SubjectId, @timeOut, N'@examName',@type,@sAccountID,@Semester)";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@SubjectId", exam.SubjectId);
+                command.Parameters.AddWithValue("@timeOut", exam.timeOut);
+                command.Parameters.AddWithValue("@examName", exam.examName);
+                command.Parameters.AddWithValue("@type", exam.type);
+                command.Parameters.AddWithValue("@sAccountID", exam.sAccountID);
+                command.Parameters.AddWithValue("@Semester", exam.Semester);
+                conn.Open();
+                int serviceID=(int)command.ExecuteScalar();
+                conn.Close();
+                return ""+serviceID;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return "";
+            }
+        }
+        public static bool CreatQuestion(QuestionItemInfo questionItem)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "insert into Question values(@ExamId, @question, @answers,@radioAnswer, @checkBoxAnswers, @questionIndex)";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@ExamId", questionItem.ExamId);
+                command.Parameters.AddWithValue("@question", questionItem.question);
+                command.Parameters.AddWithValue("@answers", questionItem.answers);
+                command.Parameters.AddWithValue("@radioAnswer", questionItem.radioAnswer);
+                command.Parameters.AddWithValue("@checkBoxAnswers", questionItem.checkBoxAnswers);
+                command.Parameters.AddWithValue("@questionIndex", questionItem.index);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
+        public static bool UpdateQuestion(QuestionItemInfo questionItem)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "UPDATE Question SET id = @ExamId, question = @question," +
+                    " answers = N'@answers',radioAnswer = @radioAnswer, checkBoxAnswers = @checkBoxAnswers," +
+                    " questionIndex = @questionIndex) where id = @id";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@ExamId", questionItem.ExamId);
+                command.Parameters.AddWithValue("@question", questionItem.question);
+                command.Parameters.AddWithValue("@answers", questionItem.answers);
+                command.Parameters.AddWithValue("@radioAnswer", questionItem.radioAnswer);
+                command.Parameters.AddWithValue("@checkBoxAnswers", questionItem.checkBoxAnswers);
+                command.Parameters.AddWithValue("@questionIndex", questionItem.index);
+                command.Parameters.AddWithValue("@id", questionItem.id);
+                conn.Open();
+                conn.Close();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
         }
     }
 }

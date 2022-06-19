@@ -9,57 +9,40 @@ namespace GUI
     public partial class StudentManagement : Form
     {
         private StudentBUS studentBUS = new StudentBUS();
-        Home homeView;
-        HandleStudent handleStudent;
+        public static StudentManagement instance;
+        StudentInfo handleStudent;
         //private DataGridViewCheckBoxColumn dgvcCheckBox = new DataGridViewCheckBoxColumn();
         public StudentManagement()
         {
-            if (Login.account.RoleID == 2)
-            {
-                MessageBox.Show("cut");
-                this.Hide();
-                if (homeView == null)
-                {
-                    homeView = new Home();
-                }
-                homeView.ShowDialog();
-            }
-            else
-            {
-                InitializeComponent();
-            }
+            
+            Auth();
             //dgvcCheckBox.HeaderText = "Select";
             //studentsGridView.Columns.Add(dgvcCheckBox);
         }
-        public StudentManagement(Home home)
+        private void Auth()
         {
-            this.homeView = home;
             if (Login.account.RoleID == 2)
             {
                 MessageBox.Show("cut");
-                this.Hide();
-                if (homeView == null)
+                if (Home.instance == null)
                 {
-                    homeView = new Home();
+                    Home.instance = new Home();
                 }
-                homeView.Show();
+                Home.instance.Show();
+                this.Close();
             }
             else
             {
                 InitializeComponent();
+                StudentsGridView.DataSource = studentBUS.GetAllStudentInfo();
+                instance = this;
             }
-            //studentsGridView.Columns.Add(dgvcCheckBox);
-        }
-
-        private void StudentManagement_Load(object sender, EventArgs e)
-        {
-            studentsGridView.DataSource = studentBUS.GetAllStudentInfo();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            HandleStudent stView = new HandleStudent(this);
+            StudentInfo stView = new StudentInfo(this);
             stView.ShowDialog();
         }
 
@@ -73,7 +56,7 @@ namespace GUI
                 this.Hide();
                 if (handleStudent == null)
                 {
-                    handleStudent = new HandleStudent(studentSelected,this);
+                    handleStudent = new StudentInfo(studentSelected,this);
                 }
                 handleStudent.ShowDialog();
             }
@@ -81,7 +64,7 @@ namespace GUI
         private Student GetStudentData(int rowIndex)
         {
             Student student = new Student();
-            DataGridViewRow row = studentsGridView.Rows[rowIndex];
+            DataGridViewRow row = StudentsGridView.Rows[rowIndex];
             student.classId = Convert.ToString(row.Cells["StudentId"].Value);
             student.dateOfBirth = Convert.ToString(row.Cells["DateOfBirth"].Value);
             student.studentName = Convert.ToString(row.Cells["StudentName"].Value);
@@ -92,12 +75,12 @@ namespace GUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (homeView == null)
+            if (Home.instance == null)
             {
-                homeView = new Home();
+                Home.instance = new Home();
             }
-            this.Dispose();
-            homeView.ShowDialog();
+            Home.instance.Show();
+            this.Hide();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -117,7 +100,12 @@ namespace GUI
         {
             string searchKey =  searchBox.Text.Trim();
             List<Student> students = studentBUS.GetStudentsByString(searchKey);
-            studentsGridView.DataSource = students;
+            StudentsGridView.DataSource = students;
+        }
+
+        private void StudentManagement_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

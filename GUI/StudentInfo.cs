@@ -6,29 +6,29 @@ using BUS;
 
 namespace GUI
 {
-    public partial class HandleStudent : Form
+    public partial class StudentInfo : Form
     {
         private Student currentStudent;
         private StudentManagement studentManagement;
-        public HandleStudent()
+        public StudentInfo()
         {
             InitializeComponent();
             txtStudentId.Enabled = true;
         }
-        public HandleStudent(StudentManagement studentManagement)
+        public StudentInfo(StudentManagement studentManagement)
         {
             InitializeComponent();
             txtStudentId.Enabled = true;
             this.studentManagement = studentManagement;
         }
-        public HandleStudent(Student studentData)
+        public StudentInfo(Student studentData)
         {
             InitializeComponent();
             this.currentStudent = studentData;
             txtStudentId.Enabled = false;
             InitStudentData();
         }
-        public HandleStudent(Student studentData, StudentManagement studentManagement)
+        public StudentInfo(Student studentData, StudentManagement studentManagement)
         {
             InitializeComponent();
             this.currentStudent = studentData;
@@ -166,6 +166,9 @@ namespace GUI
             BackToManagerment();
         }
 
-        
+        private void HandleStudent_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

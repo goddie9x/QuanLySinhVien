@@ -12,7 +12,6 @@ namespace GUI
         public static Account account = new Account();
         AccountBUS acBUS = new AccountBUS();
         StudentManagement studentManagement;
-        public static Login instance;
 
         public Login()
         {
@@ -43,7 +42,6 @@ namespace GUI
                     this.Hide();
                     Home homeView = new Home();
                     homeView.ShowDialog();
-                    this.Hide();
                 }
                 else
                 {
@@ -56,6 +54,11 @@ namespace GUI
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Login_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Dispose();
         }
     }
 }

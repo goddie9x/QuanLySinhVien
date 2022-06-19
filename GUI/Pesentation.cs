@@ -22,54 +22,33 @@ namespace GUI
     public partial class Pesentation : Form
     {
         #region Variables
-        int testid = 0;
         private VideoCaptureDevice videoCapture = null;
         private Image<Bgr, Byte> currentFrame = null;
         Mat frame = new Mat();
         private bool facesDetectionEnabled = false;
         static readonly CascadeClassifier cascadeClassifier = new CascadeClassifier(@"C:\Users\Administrator\Downloads\QuanLySinhVien\QuanLySinhVien\BUS\haarcascade_frontalface_default.xml");
-        Image<Bgr, Byte> faceResult = null;
         List<Mat> TrainedFaces = new List<Mat>();
         List<int> PersonsLabes = new List<int>();
         private FilterInfoCollection filter;
-        private VideoCaptureDevice device;
         private List<Subject> subjects;
         private Student currentStudent;
-        private Home home;
         private StudentBUS stbus = new StudentBUS();
         private SubjectBUS sjbus = new SubjectBUS();
-        private EigenFaceRecognizer eigenFaceRecognizer;
-
         bool EnableSaveImage = false;
         private bool isTrained = false;
+        bool isDisplayName = true;
+        private int CountSavedImage = 0;
         EigenFaceRecognizer recognizer;
         List<string> PersonsNames = new List<string>();
 
         #endregion
-
-        public Pesentation(Home home = null)
+        public Pesentation()
         {
             InitializeComponent();
-            GetAllSubject();
-            if (Login.account.RoleID== 2)
-            {
-                studentNameField.Enabled = false;
-                studentIDField.Enabled = false;
-                GetCurrentStudent();
-            }
-            else
-            {
-                MessageBox.Show("You are not a student, you have nothing to do here ok!");
-                if (home == null)
-                {
-                    home = new Home();
-                }
-                this.Dispose();
-                home.ShowDialog();
-            }
         }
         private void GetAllSubject()
         {
+            subjectSelects.Items.Clear();
             subjects = sjbus.GetAllSubject();
             if (subjects != null)
             {
@@ -86,6 +65,27 @@ namespace GUI
             studentIDField.Text = currentStudent.studentId;
         }
 
+        private void HandleCheckRole()
+        {
+            if (Login.account.RoleID == 2)
+            {
+                GetAllSubject();
+                studentNameField.Enabled = false;
+                studentIDField.Enabled = false;
+                CountSavedImage = 0;
+                GetCurrentStudent();
+            }
+            else
+            {
+                MessageBox.Show("You are not a student, you have nothing to do here ok!");
+                if (Home.instance == null)
+                {
+                    Home.instance = new Home();
+                }
+                Home.instance.Show();
+                this.Hide();
+            }
+        }
         private void Pesentation_Load(object sender, EventArgs e)
         {
             filter = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -95,13 +95,14 @@ namespace GUI
         }
         private void Pesentation_Close(object sender, FormClosingEventArgs e)
         {
-            if (videoCapture.IsRunning)
+            if (videoCapture != null&& videoCapture.IsRunning)
             {
                 videoCapture.Stop();
             }
         }
         private void btnCapture_Click(object sender, EventArgs e)
         {
+            CountSavedImage = 0;
             //Dispose of Capture if it was created before
             if (videoCapture != null) videoCapture.Stop();
             videoCapture = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
@@ -146,9 +147,16 @@ namespace GUI
                             Image<Bgr, Byte> resultImage = currentFrame.Convert<Bgr, Byte>();
                             resultImage.ROI = face;
                             picDetected.SizeMode = PictureBoxSizeMode.Zoom;
-                            picDetected.Image = resultImage.AsBitmap<Bgr,Byte>();
+                            try
+                            {
+                                picDetected.Image = resultImage.AsBitmap<Bgr, Byte>();
+                            }
+                            catch (Exception e)
+                            {
 
-                            if (EnableSaveImage)
+                            }
+
+                            if (EnableSaveImage && CountSavedImage < 11)
                             {
                                 //We will create a directory if does not exists!
                                 string path = Directory.GetCurrentDirectory() + @"\TrainedImages";
@@ -156,28 +164,33 @@ namespace GUI
                                     Directory.CreateDirectory(path);
                                 //we will save 10 images with delay a second for each image 
                                 //to avoid hang GUI we will create a new task
-                                Task.Factory.StartNew(() => {
-                                    for (int i = 0; i < 10; i++)
+                                try
+                                {
+                                    Task.Factory.StartNew(() =>
                                     {
-                                        try
+                                        if (CountSavedImage < 11)
                                         {
                                             //resize the image then saving it
-                                            resultImage.Resize(200, 200, Inter.Cubic).Save(path + @"\" + currentStudent.studentId +"-"+i+".jpg");
+                                            resultImage.Resize(200, 200, Inter.Cubic).Save(path + @"\" + currentStudent.studentId + "-" + CountSavedImage + ".jpg");
+                                            Application.DoEvents();
+                                            CountSavedImage++;
                                             Thread.Sleep(1000);
                                         }
-                                        catch (Exception e)
+                                        else
                                         {
-                                            MessageBox.Show(e.ToString());
+                                            EnableSaveImage = false;
                                         }
-                                    }
-                                });
-
+                                    });
+                                }
+                                catch (Exception e){
+                                    MessageBox.Show(e.ToString());
+                                }
                             }
-                            EnableSaveImage = false;
 
                             if (btnAddPerson.InvokeRequired)
                             {
-                                btnAddPerson.Invoke(new ThreadStart(delegate {
+                                btnAddPerson.Invoke(new ThreadStart(delegate
+                                {
                                     btnAddPerson.Enabled = true;
                                 }));
                             }
@@ -199,9 +212,11 @@ namespace GUI
                                     CvInvoke.Rectangle(currentFrame, face, new Bgr(Color.Green).MCvScalar, 2);
                                     if (studentIdDetected == Login.account.sUsername)
                                     {
+                                        isDisplayName = false;
                                         if (PesentBtn.InvokeRequired)
                                         {
-                                            PesentBtn.Invoke(new ThreadStart(delegate {
+                                            PesentBtn.Invoke(new ThreadStart(delegate
+                                            {
                                                 PesentBtn.Enabled = true;
                                             }));
                                         }
@@ -210,35 +225,13 @@ namespace GUI
                                             PesentBtn.Enabled = true;
                                         }
                                     }
-                                    else{
-                                        if (PesentBtn.InvokeRequired)
-                                        {
-                                            PesentBtn.Invoke(new ThreadStart(delegate {
-                                                PesentBtn.Enabled = false;
-                                            }));
-                                        }
-                                        else
-                                        {
-                                            PesentBtn.Enabled = false;
-                                        }
-                                    }
                                 }
                                 //here results did not found any know faces
-                                else
+                                else if (isDisplayName)
                                 {
                                     CvInvoke.PutText(currentFrame, "Unknown", new Point(face.X - 2, face.Y - 2),
                                         FontFace.HersheyComplex, 1.0, new Bgr(Color.Orange).MCvScalar);
                                     CvInvoke.Rectangle(currentFrame, face, new Bgr(Color.Red).MCvScalar, 2);
-                                    if (PesentBtn.InvokeRequired)
-                                    {
-                                        PesentBtn.Invoke(new ThreadStart(delegate {
-                                            PesentBtn.Enabled = false;
-                                        }));
-                                    }
-                                    else
-                                    {
-                                        PesentBtn.Enabled = false;
-                                    }
                                 }
                             }
                         }
@@ -264,6 +257,7 @@ namespace GUI
         {
             btnAddPerson.Enabled = false;
             EnableSaveImage = true;
+            CountSavedImage = 0;
         }
 
         private void btnTrain_Click(object sender, EventArgs e)
@@ -271,7 +265,7 @@ namespace GUI
             TrainImagesFromDir();
         }
         //Step 4: train Images .. we will use the saved images from the previous example 
-        private bool TrainImagesFromDir()
+        private void TrainImagesFromDir()
         {
             int ImagesCount = 0;
             double Threshold = 2000;
@@ -282,7 +276,6 @@ namespace GUI
             {
                 string path = Directory.GetCurrentDirectory() + @"\TrainedImages";
                 string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
-
                 foreach (var file in files)
                 {
                     Image<Gray, byte> trainedImage = new Image<Gray, byte>(file).Resize(200, 200, Inter.Cubic);
@@ -294,7 +287,6 @@ namespace GUI
                     ImagesCount++;
                     Debug.WriteLine(ImagesCount + ". " + name);
                 }
-
                 if (TrainedFaces.Count() > 0)
                 {
                     // recognizer = new EigenFaceRecognizer(ImagesCount,Threshold);
@@ -304,43 +296,76 @@ namespace GUI
                     isTrained = true;
                     //Debug.WriteLine(ImagesCount);
                     //Debug.WriteLine(isTrained);
-                    return true;
                 }
                 else
                 {
                     isTrained = false;
-                    return false;
                 }
             }
             catch (Exception ex)
             {
                 isTrained = false;
                 MessageBox.Show("Error in Train Images: " + ex.Message);
-                return false;
             }
 
         }
-        private bool Present()
+        private void Present()
         {
-            string subjectSelected = (string)subjectSelects.SelectedItem;
-            if (subjectSelected == null)
+            int subjectIndex = subjectSelects.SelectedIndex;
+            if (subjectIndex < 0)
             {
                 MessageBox.Show("Please select which subject do you want to present!");
-                return false;
+                return;
             }
-            return stbus.HandlePresentation(Login.account.sUsername,subjectSelected);
-        }
-
-        private void PesentBtn_Click(object sender, EventArgs e)
-        {
-            if (Present())
+            var currentSubject = subjects[subjectIndex];
+            if (currentSubject.CheckValidatePesentNow())
             {
-                MessageBox.Show("Present successfull");
+                if (stbus.HandlePresentation(Login.account.sUsername, currentSubject.subjectId))
+                {
+                    MessageBox.Show("Present successfull");
+                }
+                else
+                {
+                    MessageBox.Show("Something went wrong, please try again");
+
+                }
             }
             else
             {
-                MessageBox.Show("Something went wrong, please try again");
+                MessageBox.Show("You cannot present this subject for now, it's out of time");
             }
         }
-    }        
+        private void PesentBtn_Click(object sender, EventArgs e)
+        {
+            Present();
+        }
+
+        private void Pesentation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (videoCapture != null && videoCapture.IsRunning)
+            {
+                videoCapture.Stop();
+            }
+            Application.Exit();
+        }
+
+        private void BackHomeBtn_Click(object sender, EventArgs e)
+        {
+            if (videoCapture != null && videoCapture.IsRunning)
+            {
+                videoCapture.Stop();
+            }
+            if (Home.instance == null)
+            {
+                Home.instance = new Home();
+            }
+            Home.instance.Show();
+            this.Hide();
+        }
+
+        private void Pesentation_Activated(object sender, EventArgs e)
+        {
+            HandleCheckRole();
+        }
+    }
 }

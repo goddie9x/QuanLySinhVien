@@ -6,7 +6,8 @@ namespace DTO
     {
         #region attributes
         private string SubjectId;
-        private string Time;
+        private TimeSpan TimeStart;
+        private TimeSpan TimeEnd;
         private int DayOfWeek;
         private string SubjectName;
 
@@ -18,12 +19,20 @@ namespace DTO
                 this.SubjectId = value;
             }
         }
-        public string time
+        public string timeStart
         {
-            get { return Time; }
+            get { return TimeStart.ToString(); }
             set
             {
-                this.Time = value;
+                this.TimeStart = TimeSpan.Parse(value);
+            }
+        }
+        public string timeEnd
+        {
+            get { return TimeEnd.ToString(); }
+            set
+            {
+                this.TimeEnd = TimeSpan.Parse(value); ;
             }
         }
         public string subjectName
@@ -43,5 +52,16 @@ namespace DTO
             }
         }
         #endregion
+        public bool CheckValidatePesentNow()
+        {
+
+            DateTime now = DateTime.Now;
+            int dayOfWeekNow = (int)now.DayOfWeek;
+            if (dayOfWeekNow != this.DayOfWeek)
+            {
+                return false;
+            }
+            return TimeStart <= now.TimeOfDay&& TimeEnd>= now.TimeOfDay;
+        }
     }
 }

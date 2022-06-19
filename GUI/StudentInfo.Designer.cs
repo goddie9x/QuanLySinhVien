@@ -1,7 +1,7 @@
 ﻿
 namespace GUI
 {
-    partial class HandleStudent
+    partial class StudentInfo
     {
         /// <summary>
         /// Required designer variable.
@@ -30,6 +30,7 @@ namespace GUI
         private void InitializeComponent()
         {
             this.groupBoxMain = new System.Windows.Forms.GroupBox();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.radioFemale = new System.Windows.Forms.RadioButton();
@@ -44,7 +45,6 @@ namespace GUI
             this.txtClassId = new System.Windows.Forms.TextBox();
             this.txtStudentName = new System.Windows.Forms.TextBox();
             this.txtStudentId = new System.Windows.Forms.TextBox();
-            this.btnDelete = new System.Windows.Forms.Button();
             this.groupBoxMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +70,16 @@ namespace GUI
             this.groupBoxMain.Size = new System.Drawing.Size(696, 233);
             this.groupBoxMain.TabIndex = 0;
             this.groupBoxMain.TabStop = false;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(455, 83);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 16;
+            this.btnDelete.Text = "delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnBack
             // 
@@ -198,24 +208,16 @@ namespace GUI
             this.txtStudentId.Size = new System.Drawing.Size(100, 20);
             this.txtStudentId.TabIndex = 0;
             // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(455, 83);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 16;
-            this.btnDelete.Text = "delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // HandleStudent
+            // StudentInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.groupBoxMain);
-            this.Name = "HandleStudent";
+            this.Name = "StudentInfo";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Student";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HandleStudent_FormClosed);
             this.groupBoxMain.ResumeLayout(false);
             this.groupBoxMain.PerformLayout();
             this.ResumeLayout(false);
