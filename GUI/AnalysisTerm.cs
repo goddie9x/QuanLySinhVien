@@ -37,7 +37,7 @@ namespace GUI
             SemesterSelect.Items.Add("Select semeter");
             for (int i = 1;i<= amountSementer; i++)
             {
-                int currentYear = DateTime.Now.Year - amountSementer + i / 2;
+                int currentYear = DateTime.Now.Year - (amountSementer - i) / 2;
                 string semeterItem = "semeter " + (i % 2 + 1) + " (year "+ currentYear + ")";
                 SemesterSelect.Items.Add(semeterItem);
             }
@@ -49,7 +49,6 @@ namespace GUI
             string studentTextQuery = studentQueryText.Text.Trim().Replace("'", "''");
             if (SemesterSelect.SelectedIndex>0)
             {
-                MessageBox.Show(SemesterSelect.SelectedIndex.ToString());
                 query += " and Learning.Semester = " + SemesterSelect.SelectedIndex;
             }
             if (studentTextQuery != "")

@@ -146,7 +146,7 @@ namespace DAL
             try
             {
                 SqlConnection conn = SqlConnectionData.Connect();
-                string queryString = "delete from Transcript where StudentId = @deleteId ;"
+                string queryString = "delete from Account where sAccountID = @deleteId ;"
                     + "  delete from Presentation where StudentId = @deleteId ;"
                     + "  delete from Learning where StudentId = @deleteId ;"
                     + "  delete from Student where StudentId = @deleteId ;";
@@ -296,6 +296,7 @@ namespace DAL
             }
             catch (SqlException e)
             {
+                MessageBox.Show(e.Message.ToString());
             }
         return subjects;
         } 

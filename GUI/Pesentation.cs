@@ -40,6 +40,7 @@ namespace GUI
         private int CountSavedImage = 0;
         EigenFaceRecognizer recognizer;
         List<string> PersonsNames = new List<string>();
+        private bool isClosing = false;
 
         #endregion
         public Pesentation()
@@ -139,6 +140,10 @@ namespace GUI
 
                         foreach (var face in faces)
                         {
+                            if (isClosing)
+                            {
+                                return;
+                            }
                             //Draw square around each face 
                             // CvInvoke.Rectangle(currentFrame, face, new Bgr(Color.Red).MCvScalar, 2);
 
@@ -278,6 +283,10 @@ namespace GUI
                 string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
                 foreach (var file in files)
                 {
+                    if (isClosing)
+                    {
+                        return;
+                    }
                     Image<Gray, byte> trainedImage = new Image<Gray, byte>(file).Resize(200, 200, Inter.Cubic);
                     CvInvoke.EqualizeHist(trainedImage, trainedImage);
                     TrainedFaces.Add(trainedImage.Mat);
@@ -351,6 +360,7 @@ namespace GUI
 
         private void BackHomeBtn_Click(object sender, EventArgs e)
         {
+            isClosing = true;
             if (videoCapture != null && videoCapture.IsRunning)
             {
                 videoCapture.Stop();

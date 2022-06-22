@@ -11,19 +11,15 @@ namespace GUI
         private StudentBUS studentBUS = new StudentBUS();
         public static StudentManagement instance;
         StudentInfo handleStudent;
-        //private DataGridViewCheckBoxColumn dgvcCheckBox = new DataGridViewCheckBoxColumn();
         public StudentManagement()
         {
-            
             Auth();
-            //dgvcCheckBox.HeaderText = "Select";
-            //studentsGridView.Columns.Add(dgvcCheckBox);
         }
         private void Auth()
         {
             if (Login.account.RoleID == 2)
             {
-                MessageBox.Show("cut");
+                MessageBox.Show("You have no permision!");
                 if (Home.instance == null)
                 {
                     Home.instance = new Home();

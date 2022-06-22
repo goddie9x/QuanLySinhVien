@@ -163,6 +163,11 @@ namespace GUI
         }
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
+            if (questionItems.Count < 1)
+            {
+                MessageBox.Show("Please input at lease 1 question");
+                return;
+            }
             if (isStudent)
             {
                 CalculatorPoint();

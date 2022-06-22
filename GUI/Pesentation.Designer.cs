@@ -38,8 +38,6 @@ namespace GUI
             this.label2 = new System.Windows.Forms.Label();
             this.studentNameLabel = new System.Windows.Forms.Label();
             this.studentNameField = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.imagePrev = new System.Windows.Forms.PictureBox();
             this.cboDevice = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -114,23 +112,6 @@ namespace GUI
             this.studentNameField.Name = "studentNameField";
             this.studentNameField.Size = new System.Drawing.Size(100, 20);
             this.studentNameField.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(655, 20);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "statistics by day";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(742, 17);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 8;
             // 
             // imagePrev
             // 
@@ -243,8 +224,6 @@ namespace GUI
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cboDevice);
             this.Controls.Add(this.imagePrev);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.subjectSelects);
             this.Controls.Add(this.studentIDField);
@@ -276,8 +255,6 @@ namespace GUI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label studentNameLabel;
         private System.Windows.Forms.TextBox studentNameField;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.PictureBox imagePrev;
         private System.Windows.Forms.ComboBox cboDevice;
         private System.Windows.Forms.Label label4;

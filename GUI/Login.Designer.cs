@@ -71,6 +71,7 @@ namespace GUI
             // 
             this.txtPassword.Location = new System.Drawing.Point(591, 161);
             this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(158, 20);
             this.txtPassword.TabIndex = 3;
             // 
