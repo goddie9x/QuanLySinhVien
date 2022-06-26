@@ -145,7 +145,8 @@ namespace GUI
                 {
                     MessageBox.Show("Delete student success");
                     this.Hide();
-                    StudentManagement.instance.ShowDialog();
+                    StudentManagement studentManagement = new StudentManagement();
+                    studentManagement.ShowDialog();
                 }
                 else
                 {
@@ -156,8 +157,8 @@ namespace GUI
 
         private void BackToManagerment()
         {
+            this.Hide();
             StudentManagement studentManagement = new StudentManagement();
-            this.Dispose();
             studentManagement.ShowDialog();
         }
         private void btnBack_Click(object sender, EventArgs e)

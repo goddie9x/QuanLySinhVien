@@ -26,7 +26,7 @@ namespace GUI
         private Image<Bgr, Byte> currentFrame = null;
         Mat frame = new Mat();
         private bool facesDetectionEnabled = false;
-        static readonly CascadeClassifier cascadeClassifier = new CascadeClassifier(@"C:\Users\Administrator\Downloads\QuanLySinhVien\QuanLySinhVien\BUS\haarcascade_frontalface_default.xml");
+        static readonly CascadeClassifier cascadeClassifier = new CascadeClassifier(@"G:\dot_net\student_manager\BUS\haarcascade_frontalface_default.xml");
         List<Mat> TrainedFaces = new List<Mat>();
         List<int> PersonsLabes = new List<int>();
         private FilterInfoCollection filter;

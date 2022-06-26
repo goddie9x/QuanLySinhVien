@@ -11,16 +11,10 @@ namespace GUI
         
         public static Account account = new Account();
         AccountBUS acBUS = new AccountBUS();
-        StudentManagement studentManagement;
 
         public Login()
         {
             InitializeComponent();
-        }
-        public Login(StudentManagement studentManagement)
-        {
-            InitializeComponent();
-            this.studentManagement = studentManagement;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)

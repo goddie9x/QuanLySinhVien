@@ -9,21 +9,12 @@ namespace GUI
     public partial class StudentManagement : Form
     {
         private StudentBUS studentBUS = new StudentBUS();
-        public static StudentManagement instance;
         StudentInfo handleStudent;
         public StudentManagement()
-        {
-            Auth();
-        }
-        private void Auth()
         {
             if (Login.account.RoleID == 2)
             {
                 MessageBox.Show("You have no permision!");
-                if (Home.instance == null)
-                {
-                    Home.instance = new Home();
-                }
                 Home.instance.Show();
                 this.Close();
             }
@@ -31,7 +22,6 @@ namespace GUI
             {
                 InitializeComponent();
                 StudentsGridView.DataSource = studentBUS.GetAllStudentInfo();
-                instance = this;
             }
         }
 
@@ -71,12 +61,16 @@ namespace GUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (Home.instance == null)
+            this.Hide();
+            try
+            {
+                Home.instance.ShowDialog();
+            }
+            catch (Exception ex)
             {
                 Home.instance = new Home();
+                Home.instance.ShowDialog();
             }
-            Home.instance.Show();
-            this.Hide();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -84,7 +78,6 @@ namespace GUI
             //delete
             Student student = new Student();
             MessageBox.Show(student.studentId);
-            
         }
 
         private void searchBox_TextChanged(object sender, EventArgs e)

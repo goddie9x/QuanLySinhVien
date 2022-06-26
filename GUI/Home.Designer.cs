@@ -38,7 +38,6 @@ namespace GUI
             this.logoutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.examToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.managerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.doToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.examToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doExamToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -111,7 +110,6 @@ namespace GUI
             // 
             this.examToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.managerToolStripMenuItem,
-            this.createToolStripMenuItem1,
             this.doToolStripMenuItem});
             this.examToolStripMenuItem1.Name = "examToolStripMenuItem1";
             this.examToolStripMenuItem1.Size = new System.Drawing.Size(48, 36);
@@ -120,21 +118,14 @@ namespace GUI
             // managerToolStripMenuItem
             // 
             this.managerToolStripMenuItem.Name = "managerToolStripMenuItem";
-            this.managerToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.managerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.managerToolStripMenuItem.Text = "Manager";
             this.managerToolStripMenuItem.Click += new System.EventHandler(this.managerToolStripMenuItem_Click);
-            // 
-            // createToolStripMenuItem1
-            // 
-            this.createToolStripMenuItem1.Name = "createToolStripMenuItem1";
-            this.createToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
-            this.createToolStripMenuItem1.Text = "Create";
-            this.createToolStripMenuItem1.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
             // 
             // doToolStripMenuItem
             // 
             this.doToolStripMenuItem.Name = "doToolStripMenuItem";
-            this.doToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.doToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.doToolStripMenuItem.Text = "Do";
             this.doToolStripMenuItem.Click += new System.EventHandler(this.doToolStripMenuItem_Click);
             // 
@@ -188,7 +179,6 @@ namespace GUI
         private System.Windows.Forms.ToolStripMenuItem presentationToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem transcriptToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem examToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem createToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem doToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem examToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem doExamToolStripMenuItem;

@@ -16,18 +16,8 @@ namespace GUI
         private void btnStudentMana_Click()
         {
             this.Hide();
-            if (StudentManagement.instance == null)
-            {
-                StudentManagement.instance = new StudentManagement();
-            }
-            try
-            {
-                StudentManagement.instance.ShowDialog();
-            }
-            catch(Exception e)
-            {
-
-            }
+            StudentManagement studentManagement = new StudentManagement();
+            studentManagement.ShowDialog();
         }
 
         private void logoutBtn_Click()
@@ -109,7 +99,6 @@ namespace GUI
         {
              bool canManagerExam = Login.account.RoleID != 2;
             managerToolStripMenuItem.Visible = canManagerExam;
-            createToolStripMenuItem1.Visible = canManagerExam;
             doToolStripMenuItem.Visible = !canManagerExam;
         }
     }

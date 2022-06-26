@@ -521,6 +521,32 @@ namespace DAL
                 return "";
             }
         }
+        public static bool EditExam(Exam exam)
+        {
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "update Exam set SubjectId = @SubjectId, timeOut = @timeOut,examName = N'@examName'," +
+                    " type = @type,sAccountID = @sAccountID,Semester = @Semester where id = @id";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@SubjectId", exam.SubjectId);
+                command.Parameters.AddWithValue("@timeOut", exam.timeOut);
+                command.Parameters.AddWithValue("@examName", exam.examName);
+                command.Parameters.AddWithValue("@type", exam.type);
+                command.Parameters.AddWithValue("@sAccountID", exam.sAccountID);
+                command.Parameters.AddWithValue("@Semester", exam.Semester);
+                command.Parameters.AddWithValue("@id", exam.id);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
         public static bool CreatQuestion(QuestionItemInfo questionItem)
         {
             try
@@ -550,10 +576,9 @@ namespace DAL
             try
             {
                 SqlConnection conn = SqlConnectionData.Connect();
-                string queryString = "UPDATE Question SET id = @ExamId, question = @question," +
-                    " answers = N'@answers',radioAnswer = @radioAnswer, checkBoxAnswers = @checkBoxAnswers," +
-                    " questionIndex = @questionIndex) where id = @id";
-                SqlCommand command = new SqlCommand(queryString, conn);
+                string procedure = "CreateOrUpdateQuestion";
+                SqlCommand command = new SqlCommand(procedure, conn);
+                command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@ExamId", questionItem.ExamId);
                 command.Parameters.AddWithValue("@question", questionItem.question);
                 command.Parameters.AddWithValue("@answers", questionItem.answers);
@@ -562,6 +587,7 @@ namespace DAL
                 command.Parameters.AddWithValue("@questionIndex", questionItem.index);
                 command.Parameters.AddWithValue("@id", questionItem.id);
                 conn.Open();
+                command.ExecuteNonQuery();
                 conn.Close();
                 return true;
             }

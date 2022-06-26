@@ -136,9 +136,12 @@ namespace GUI
 
         private void EditExam()
         {
-            foreach (QuestionItemInfo questItemInfo in questionItemsInfo)
+            examBUS.EditExam(curExam);
+            foreach (QuestionItemComponent questionItemComponent in questionItems)
             {
-                examBUS.UpdateQuestion(questItemInfo);
+                QuestionItemInfo questionItemInfo = questionItemComponent.GetQuestionItemInfo();
+                questionItemInfo.SetExamId(curExam.id);
+                examBUS.UpdateQuestion(questionItemInfo);
             }
             MessageBox.Show("Edit the exam success!");
         }

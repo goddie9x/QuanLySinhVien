@@ -26,6 +26,10 @@ namespace BUS
         {
             return DatabaseAccess.CreatQuestion(questionItem);
         }
+        public bool EditExam(Exam exam)
+        {
+            return DatabaseAccess.EditExam(exam);
+        }
         public bool UpdateQuestion(QuestionItemInfo questionItem)
         {
             return DatabaseAccess.UpdateQuestion(questionItem);
