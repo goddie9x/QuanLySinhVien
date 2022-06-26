@@ -7,6 +7,8 @@ using BUS;
 using System.Diagnostics;
 using System.Linq;
 using DAL;
+using DTO;
+using System.Collections.Generic;
 
 namespace GUI
 {
@@ -29,7 +31,8 @@ namespace GUI
 
         private void GetAllSubject()
         {
-            SubjectSelect.DataSource = sjbus.GetAllSubject().Select(s => s.subjectName).ToList();
+            List<Subject> listSubject = sjbus.GetAllSubject();
+            SubjectSelect.DataSource = listSubject.Select(s => s.subjectName).ToList();
         }
         private void InitSementerSelection()
         {

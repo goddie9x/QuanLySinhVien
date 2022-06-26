@@ -48,33 +48,38 @@ namespace GUI
             this.picturePreviewMin = new System.Windows.Forms.PictureBox();
             this.btnTrain = new System.Windows.Forms.Button();
             this.BackHomeBtn = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.imagePrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDetected)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePreviewMin)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // PesentBtn
             // 
+            this.PesentBtn.BackColor = System.Drawing.Color.Green;
             this.PesentBtn.Enabled = false;
-            this.PesentBtn.Location = new System.Drawing.Point(788, 305);
+            this.PesentBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PesentBtn.ForeColor = System.Drawing.Color.Yellow;
+            this.PesentBtn.Location = new System.Drawing.Point(77, 238);
             this.PesentBtn.Name = "PesentBtn";
             this.PesentBtn.Size = new System.Drawing.Size(75, 60);
             this.PesentBtn.TabIndex = 0;
             this.PesentBtn.Text = "4. Pesent";
-            this.PesentBtn.UseVisualStyleBackColor = true;
+            this.PesentBtn.UseVisualStyleBackColor = false;
             this.PesentBtn.Click += new System.EventHandler(this.PesentBtn_Click);
             // 
             // studentIDField
             // 
-            this.studentIDField.Location = new System.Drawing.Point(104, 63);
+            this.studentIDField.Location = new System.Drawing.Point(167, 70);
             this.studentIDField.Name = "studentIDField";
-            this.studentIDField.Size = new System.Drawing.Size(100, 20);
+            this.studentIDField.Size = new System.Drawing.Size(118, 20);
             this.studentIDField.TabIndex = 4;
             // 
             // subjectSelects
             // 
             this.subjectSelects.FormattingEnabled = true;
-            this.subjectSelects.Location = new System.Drawing.Point(104, 94);
+            this.subjectSelects.Location = new System.Drawing.Point(496, 69);
             this.subjectSelects.Name = "subjectSelects";
             this.subjectSelects.Size = new System.Drawing.Size(118, 21);
             this.subjectSelects.TabIndex = 5;
@@ -82,35 +87,44 @@ namespace GUI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 97);
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Green;
+            this.label1.Location = new System.Drawing.Point(358, 70);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.Size = new System.Drawing.Size(60, 16);
             this.label1.TabIndex = 6;
             this.label1.Text = "Subject";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 63);
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Green;
+            this.label2.Location = new System.Drawing.Point(44, 70);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.Size = new System.Drawing.Size(79, 16);
             this.label2.TabIndex = 3;
             this.label2.Text = "Student ID";
             // 
             // studentNameLabel
             // 
             this.studentNameLabel.AutoSize = true;
-            this.studentNameLabel.Location = new System.Drawing.Point(12, 28);
+            this.studentNameLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.studentNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.studentNameLabel.ForeColor = System.Drawing.Color.Green;
+            this.studentNameLabel.Location = new System.Drawing.Point(44, 35);
             this.studentNameLabel.Name = "studentNameLabel";
-            this.studentNameLabel.Size = new System.Drawing.Size(73, 13);
+            this.studentNameLabel.Size = new System.Drawing.Size(102, 16);
             this.studentNameLabel.TabIndex = 2;
             this.studentNameLabel.Text = "Student name";
             // 
             // studentNameField
             // 
-            this.studentNameField.Location = new System.Drawing.Point(104, 28);
+            this.studentNameField.Location = new System.Drawing.Point(167, 35);
             this.studentNameField.Name = "studentNameField";
-            this.studentNameField.Size = new System.Drawing.Size(100, 20);
+            this.studentNameField.Size = new System.Drawing.Size(118, 20);
             this.studentNameField.TabIndex = 1;
             // 
             // imagePrev
@@ -126,7 +140,7 @@ namespace GUI
             // cboDevice
             // 
             this.cboDevice.FormattingEnabled = true;
-            this.cboDevice.Location = new System.Drawing.Point(443, 56);
+            this.cboDevice.Location = new System.Drawing.Point(496, 35);
             this.cboDevice.Name = "cboDevice";
             this.cboDevice.Size = new System.Drawing.Size(118, 21);
             this.cboDevice.TabIndex = 10;
@@ -134,31 +148,40 @@ namespace GUI
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(369, 59);
+            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Green;
+            this.label4.Location = new System.Drawing.Point(358, 35);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 13);
+            this.label4.Size = new System.Drawing.Size(119, 16);
             this.label4.TabIndex = 11;
-            this.label4.Text = "select device";
+            this.label4.Text = "selected device";
             // 
             // CaptureBtn
             // 
-            this.CaptureBtn.Location = new System.Drawing.Point(692, 143);
+            this.CaptureBtn.BackColor = System.Drawing.Color.Green;
+            this.CaptureBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CaptureBtn.ForeColor = System.Drawing.Color.Yellow;
+            this.CaptureBtn.Location = new System.Drawing.Point(6, 37);
             this.CaptureBtn.Name = "CaptureBtn";
             this.CaptureBtn.Size = new System.Drawing.Size(75, 60);
             this.CaptureBtn.TabIndex = 13;
             this.CaptureBtn.Text = "1. Capture";
-            this.CaptureBtn.UseVisualStyleBackColor = true;
+            this.CaptureBtn.UseVisualStyleBackColor = false;
             this.CaptureBtn.Click += new System.EventHandler(this.btnCapture_Click);
             // 
             // btnDetectFaces
             // 
+            this.btnDetectFaces.BackColor = System.Drawing.Color.Green;
             this.btnDetectFaces.Enabled = false;
-            this.btnDetectFaces.Location = new System.Drawing.Point(788, 143);
+            this.btnDetectFaces.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDetectFaces.ForeColor = System.Drawing.Color.Yellow;
+            this.btnDetectFaces.Location = new System.Drawing.Point(116, 37);
             this.btnDetectFaces.Name = "btnDetectFaces";
             this.btnDetectFaces.Size = new System.Drawing.Size(75, 60);
             this.btnDetectFaces.TabIndex = 14;
             this.btnDetectFaces.Text = "2. Detect Faces";
-            this.btnDetectFaces.UseVisualStyleBackColor = true;
+            this.btnDetectFaces.UseVisualStyleBackColor = false;
             this.btnDetectFaces.Click += new System.EventHandler(this.btnDetectFaces_Click);
             // 
             // picDetected
@@ -171,13 +194,16 @@ namespace GUI
             // 
             // btnAddPerson
             // 
+            this.btnAddPerson.BackColor = System.Drawing.Color.Green;
             this.btnAddPerson.Enabled = false;
-            this.btnAddPerson.Location = new System.Drawing.Point(788, 225);
+            this.btnAddPerson.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddPerson.ForeColor = System.Drawing.Color.Yellow;
+            this.btnAddPerson.Location = new System.Drawing.Point(6, 140);
             this.btnAddPerson.Name = "btnAddPerson";
             this.btnAddPerson.Size = new System.Drawing.Size(75, 60);
             this.btnAddPerson.TabIndex = 16;
             this.btnAddPerson.Text = "3.1 Add Person";
-            this.btnAddPerson.UseVisualStyleBackColor = true;
+            this.btnAddPerson.UseVisualStyleBackColor = false;
             this.btnAddPerson.Click += new System.EventHandler(this.btnAddPerson_Click);
             // 
             // picturePreviewMin
@@ -191,36 +217,54 @@ namespace GUI
             // 
             // btnTrain
             // 
-            this.btnTrain.Location = new System.Drawing.Point(692, 305);
+            this.btnTrain.BackColor = System.Drawing.Color.Green;
+            this.btnTrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTrain.ForeColor = System.Drawing.Color.Yellow;
+            this.btnTrain.Location = new System.Drawing.Point(116, 140);
             this.btnTrain.Name = "btnTrain";
             this.btnTrain.Size = new System.Drawing.Size(75, 60);
             this.btnTrain.TabIndex = 20;
             this.btnTrain.Text = "3.2 Train Image";
-            this.btnTrain.UseVisualStyleBackColor = true;
+            this.btnTrain.UseVisualStyleBackColor = false;
             this.btnTrain.Click += new System.EventHandler(this.btnTrain_Click);
             // 
             // BackHomeBtn
             // 
-            this.BackHomeBtn.Location = new System.Drawing.Point(788, 59);
+            this.BackHomeBtn.BackColor = System.Drawing.Color.Green;
+            this.BackHomeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BackHomeBtn.ForeColor = System.Drawing.Color.Yellow;
+            this.BackHomeBtn.Location = new System.Drawing.Point(749, 35);
             this.BackHomeBtn.Name = "BackHomeBtn";
             this.BackHomeBtn.Size = new System.Drawing.Size(75, 60);
             this.BackHomeBtn.TabIndex = 21;
             this.BackHomeBtn.Text = "Home";
-            this.BackHomeBtn.UseVisualStyleBackColor = true;
+            this.BackHomeBtn.UseVisualStyleBackColor = false;
             this.BackHomeBtn.Click += new System.EventHandler(this.BackHomeBtn_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.SeaGreen;
+            this.groupBox1.Controls.Add(this.CaptureBtn);
+            this.groupBox1.Controls.Add(this.btnDetectFaces);
+            this.groupBox1.Controls.Add(this.btnTrain);
+            this.groupBox1.Controls.Add(this.btnAddPerson);
+            this.groupBox1.Controls.Add(this.PesentBtn);
+            this.groupBox1.Location = new System.Drawing.Point(688, 116);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(197, 322);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
             // 
             // Pesentation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(897, 450);
             this.Controls.Add(this.BackHomeBtn);
-            this.Controls.Add(this.btnTrain);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.picturePreviewMin);
-            this.Controls.Add(this.btnAddPerson);
             this.Controls.Add(this.picDetected);
-            this.Controls.Add(this.btnDetectFaces);
-            this.Controls.Add(this.CaptureBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cboDevice);
             this.Controls.Add(this.imagePrev);
@@ -230,7 +274,6 @@ namespace GUI
             this.Controls.Add(this.label2);
             this.Controls.Add(this.studentNameLabel);
             this.Controls.Add(this.studentNameField);
-            this.Controls.Add(this.PesentBtn);
             this.Name = "Pesentation";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pesentation";
@@ -241,6 +284,7 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.imagePrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDetected)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePreviewMin)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,5 +309,6 @@ namespace GUI
         private PictureBox picturePreviewMin;
         private Button btnTrain;
         private Button BackHomeBtn;
+        private GroupBox groupBox1;
     }
 }

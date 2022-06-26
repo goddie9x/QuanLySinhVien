@@ -12,23 +12,13 @@ namespace GUI
         StudentInfo handleStudent;
         public StudentManagement()
         {
-            if (Login.account.RoleID == 2)
-            {
-                MessageBox.Show("You have no permision!");
-                Home.instance.Show();
-                this.Close();
-            }
-            else
-            {
-                InitializeComponent();
-                StudentsGridView.DataSource = studentBUS.GetAllStudentInfo();
-            }
+            InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            StudentInfo stView = new StudentInfo(this);
+            StudentInfo stView = new StudentInfo();
             stView.ShowDialog();
         }
 
@@ -37,12 +27,12 @@ namespace GUI
             if (e.RowIndex >= 0)
             {
                 int rowIndex = e.RowIndex;
-                
+
                 Student studentSelected = GetStudentData(rowIndex);
                 this.Hide();
                 if (handleStudent == null)
                 {
-                    handleStudent = new StudentInfo(studentSelected,this);
+                    handleStudent = new StudentInfo(studentSelected);
                 }
                 handleStudent.ShowDialog();
             }
@@ -87,7 +77,7 @@ namespace GUI
 
         private void HandleSearchBoxChange()
         {
-            string searchKey =  searchBox.Text.Trim();
+            string searchKey = searchBox.Text.Trim();
             List<Student> students = studentBUS.GetStudentsByString(searchKey);
             StudentsGridView.DataSource = students;
         }
@@ -95,6 +85,20 @@ namespace GUI
         private void StudentManagement_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void StudentManagement_Shown(object sender, EventArgs e)
+        {
+            if (Login.account.RoleID == 2)
+            {
+                MessageBox.Show("You have no permision!");
+                Home.instance.Show();
+                this.Hide();
+            }
+            else
+            {
+                StudentsGridView.DataSource = studentBUS.GetAllStudentInfo();
+            }
         }
     }
 }

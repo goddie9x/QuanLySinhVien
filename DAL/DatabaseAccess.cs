@@ -278,6 +278,70 @@ namespace DAL
             }
             return subjects;
         }
+        public static List<Subject> GetAllSubjectAreLearningThisSemester(int semester)
+        {
+            List<Subject> subjects = new List<Subject>();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select DISTINCT sj.SubjectId, sj.SubjectName, sj.DayOfWeek, sj.TimeStart, sj.TimeEnd from Learning as Learn left join Subject as sj on" +
+                    " sj.SubjectId = Learn.SubjectId where Semester = @semester";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.Add("@semester", semester);
+                conn.Open();
+                SqlDataReader oReader = command.ExecuteReader();
+                while (oReader.Read())
+                {
+                    Subject subject = new Subject();
+
+                    subject.subjectName = oReader["SubjectName"].ToString();
+                    subject.timeStart = oReader["TimeStart"].ToString();
+                    subject.timeEnd = oReader["TimeEnd"].ToString();
+                    subject.dayOfWeek = Convert.ToInt32(oReader["DayOfWeek"].ToString());
+                    subject.subjectId = oReader["SubjectId"].ToString();
+                    subjects.Add(subject);
+                }
+
+                conn.Close();
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message.ToString());
+            }
+            return subjects;
+        }
+        public static List<Subject> GetAllSubjectAreLearningThisSemesterAndStudentId(int semester,string StudentId)
+        {
+            List<Subject> subjects = new List<Subject>();
+            try
+            {
+                SqlConnection conn = SqlConnectionData.Connect();
+                string queryString = "select DISTINCT sj.SubjectId, sj.SubjectName, sj.DayOfWeek, sj.TimeStart, sj.TimeEnd from Learning as Learn left join Subject as sj on" +
+                    " sj.SubjectId = Learn.SubjectId where Semester = @semester and StudentId = @StudentId";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.Parameters.Add("@semester", semester);
+                command.Parameters.Add("@StudentId", StudentId);
+                conn.Open();
+                SqlDataReader oReader = command.ExecuteReader();
+                while (oReader.Read())
+                {
+                    Subject subject = new Subject();
+
+                    subject.subjectName = oReader["SubjectName"].ToString();
+                    subject.timeStart = oReader["TimeStart"].ToString();
+                    subject.timeEnd = oReader["TimeEnd"].ToString();
+                    subject.dayOfWeek = Convert.ToInt32(oReader["DayOfWeek"].ToString());
+                    subject.subjectId = oReader["SubjectId"].ToString();
+                    subjects.Add(subject);
+                }
+
+                conn.Close();
+            }
+            catch (SqlException e)
+            {
+            }
+            return subjects;
+        }
         public static DataTable GetTransctriptByQuery(string query)
         {
             DataTable subjects = new DataTable();
@@ -306,25 +370,30 @@ namespace DAL
             try
             {
                 SqlConnection conn = SqlConnectionData.Connect();
-                string queryString = "UPDATE Learning SET ";
-                if (isLate)
+                string queryString = "handle_presentation";
+                SqlCommand command = new SqlCommand(queryString, conn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@StudentId", StudentId);
+                command.Parameters.AddWithValue("@SubjectId", SubjectId);
+                command.Parameters.AddWithValue("@isLate", isLate);
+                var returnParameter = command.Parameters.Add("@IsSuccess", SqlDbType.Int);
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+                conn.Open();
+                command.ExecuteNonQuery();
+                int IsSuccess = (int)returnParameter.Value;
+                conn.Close();
+                if (IsSuccess == 1)
                 {
-                    queryString+="AmountPesented = AmountPesented + 1 WHERE StudentId = @StudentId and SubjectId = @SubjectId";
+                    return true;
                 }
                 else
                 {
-                    queryString += "AmountPesentedLate = AmountPesentedLate + 1 WHERE StudentId = @StudentId and SubjectId = @SubjectId";
+                    return false;
                 }
-                SqlCommand command = new SqlCommand(queryString, conn);
-                command.Parameters.AddWithValue("@StudentId", StudentId);
-                command.Parameters.AddWithValue("@SubjectId", SubjectId);
-                conn.Open();
-                command.ExecuteNonQuery();
-                conn.Close();
-                return true;
             }
             catch (SqlException e)
             {
+                MessageBox.Show(e.Message.ToString());
                 return false;
             }
         }

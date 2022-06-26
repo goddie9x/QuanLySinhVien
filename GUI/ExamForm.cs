@@ -37,10 +37,10 @@ namespace GUI
         public ExamForm()
         {
             InitializeComponent();
-            GetAllSubject();
             curExam = new Exam();
             curExam.Semester = "" + generalBUS.GetCurrentSemester();
             curExam.sAccountID = Login.account.sAccountID;
+            GetAllSubject();
             SetDisplayEditingOrDoingExam();
         }
         public ExamForm(string ExamID)
@@ -64,6 +64,9 @@ namespace GUI
             curExam = examBUS.GetExamById(ExamID);
             if (curExam != null)
             {
+                if (!GetAllSubject()) {
+                    ReturnHomeForm();
+                }
                 subjectSelects.SelectedItem = curExam.SubjectId;
                 TimeOutBox.Text = curExam.GetTimeOutText();
                 ExamNameField.Text = curExam.examName;
@@ -91,16 +94,22 @@ namespace GUI
                 SetInfoForAllQuestion();
             }
         }
-        private void GetAllSubject()
+        private bool GetAllSubject()
         {
             subjectSelects.Items.Clear();
-            subjects = subjectBUS.GetAllSubject();
-            if (subjects != null)
+            subjects = subjectBUS.GetAllSubjectAreLearningThisSemester(curExam.Semester);
+            if (subjects != null&& subjects.Count>0)
             {
                 foreach (Subject item in subjects)
                 {
                     subjectSelects.Items.Add(item.subjectName);
                 }
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("We have no subject in this semester");
+                return false; 
             }
         }
 
@@ -285,7 +294,6 @@ namespace GUI
 
         private void ExamForm_Shown(object sender, EventArgs e)
         {
-            GetAllSubject();
             if (curExam.id != "")
             {
                 if(!examBUS.CheckUserTookExam(Login.account.sAccountID, curExam.id)){

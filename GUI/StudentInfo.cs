@@ -9,17 +9,10 @@ namespace GUI
     public partial class StudentInfo : Form
     {
         private Student currentStudent;
-        private StudentManagement studentManagement;
         public StudentInfo()
         {
             InitializeComponent();
             txtStudentId.Enabled = true;
-        }
-        public StudentInfo(StudentManagement studentManagement)
-        {
-            InitializeComponent();
-            txtStudentId.Enabled = true;
-            this.studentManagement = studentManagement;
         }
         public StudentInfo(Student studentData)
         {
@@ -28,17 +21,9 @@ namespace GUI
             txtStudentId.Enabled = false;
             InitStudentData();
         }
-        public StudentInfo(Student studentData, StudentManagement studentManagement)
-        {
-            InitializeComponent();
-            this.currentStudent = studentData;
-            txtStudentId.Enabled = false;
-            InitStudentData();
-            this.studentManagement = studentManagement;
-        }
         public void InitStudentData()
         {
-            if(currentStudent!= null)
+            if (currentStudent != null)
             {
                 txtStudentId.Text = currentStudent.studentId;
                 txtClassId.Text = currentStudent.classId;
@@ -73,7 +58,7 @@ namespace GUI
             //Linq
             var checkedButton = groupBoxMain.Controls.OfType<RadioButton>()
                                       .FirstOrDefault(r => r.Checked);
-            switch (checkedButton.Text) 
+            switch (checkedButton.Text)
             {
                 case "Male": return 0;
                 case "Female": return 1;
@@ -100,19 +85,15 @@ namespace GUI
             StudentBUS studentBUS = new StudentBUS();
             if (currentStudent == null)
             {
-                if (!studentBUS.AddStudent(studentInfo)) 
+                if (!studentBUS.AddStudent(studentInfo))
                 {
                     MessageBox.Show("Create student false");
                 }
                 else
                 {
                     MessageBox.Show("Create student success");
-                    this.Dispose();
-                    if (studentManagement == null)
-                    {
-                        studentManagement = new StudentManagement();
-                    }
-                    studentManagement.Show();
+                    this.Hide();
+                    ShowStudentManager();
                 }
             }
             else
@@ -124,11 +105,15 @@ namespace GUI
                 else
                 {
                     MessageBox.Show("Update student success");
-                    this.Hide();
-                    StudentManagement studentManagement = new StudentManagement();
-                    studentManagement.Show();
+                    ShowStudentManager();
                 }
             }
+        }
+        private void ShowStudentManager()
+        {
+            this.Hide();
+            StudentManagement studentManagement = new StudentManagement();
+            studentManagement.ShowDialog();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -137,16 +122,13 @@ namespace GUI
             StudentBUS studentBUS = new StudentBUS();
             if (currentStudent == null)
             {
-                    MessageBox.Show("Delete student failed");
+                MessageBox.Show("Delete student failed");
             }
             else
             {
                 if (studentBUS.DeleteStudent(studentInfo))
                 {
-                    MessageBox.Show("Delete student success");
-                    this.Hide();
-                    StudentManagement studentManagement = new StudentManagement();
-                    studentManagement.ShowDialog();
+                    ShowStudentManager();
                 }
                 else
                 {
@@ -154,16 +136,9 @@ namespace GUI
                 }
             }
         }
-
-        private void BackToManagerment()
-        {
-            this.Hide();
-            StudentManagement studentManagement = new StudentManagement();
-            studentManagement.ShowDialog();
-        }
         private void btnBack_Click(object sender, EventArgs e)
         {
-            BackToManagerment();
+            ShowStudentManager();
         }
 
         private void HandleStudent_FormClosed(object sender, FormClosedEventArgs e)

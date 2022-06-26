@@ -34,6 +34,7 @@ namespace GUI
         private Student currentStudent;
         private StudentBUS stbus = new StudentBUS();
         private SubjectBUS sjbus = new SubjectBUS();
+        private GeneralBUS generalBUS = new GeneralBUS();
         bool EnableSaveImage = false;
         private bool isTrained = false;
         bool isDisplayName = true;
@@ -47,17 +48,24 @@ namespace GUI
         {
             InitializeComponent();
         }
-        private void GetAllSubject()
+        private bool GetAllSubject()
         {
             subjectSelects.Items.Clear();
-            subjects = sjbus.GetAllSubject();
-            if (subjects != null)
+            subjects = sjbus.GetAllSubjectAreLearningThisSemesterAndStudentId(""
+                + generalBUS.GetCurrentSemester(), currentStudent.classId);
+            if (subjects != null && subjects.Count > 0)
             {
                 foreach (Subject item in subjects)
                 {
                     subjectSelects.Items.Add(item.subjectName);
                 }
             }
+            else
+            {
+                MessageBox.Show("We have no subject in this semester");
+                return false;
+            }
+            return true;
         }
         private void GetCurrentStudent()
         {
@@ -70,21 +78,19 @@ namespace GUI
         {
             if (Login.account.RoleID == 2)
             {
-                GetAllSubject();
                 studentNameField.Enabled = false;
                 studentIDField.Enabled = false;
                 CountSavedImage = 0;
                 GetCurrentStudent();
+                if (!GetAllSubject())
+                {
+                    BackToHome();
+                }
             }
             else
             {
                 MessageBox.Show("You are not a student, you have nothing to do here ok!");
-                if (Home.instance == null)
-                {
-                    Home.instance = new Home();
-                }
-                Home.instance.Show();
-                this.Hide();
+                BackToHome();
             }
         }
         private void Pesentation_Load(object sender, EventArgs e)
@@ -96,7 +102,7 @@ namespace GUI
         }
         private void Pesentation_Close(object sender, FormClosingEventArgs e)
         {
-            if (videoCapture != null&& videoCapture.IsRunning)
+            if (videoCapture != null && videoCapture.IsRunning)
             {
                 videoCapture.Stop();
             }
@@ -187,7 +193,8 @@ namespace GUI
                                         }
                                     });
                                 }
-                                catch (Exception e){
+                                catch (Exception e)
+                                {
                                     MessageBox.Show(e.ToString());
                                 }
                             }
@@ -327,21 +334,40 @@ namespace GUI
                 return;
             }
             var currentSubject = subjects[subjectIndex];
-            if (currentSubject.CheckValidatePesentNow())
+            string typeOfPresent = currentSubject.ValidatePesentNow();
+            switch (typeOfPresent)
             {
-                if (stbus.HandlePresentation(Login.account.sUsername, currentSubject.subjectId))
-                {
-                    MessageBox.Show("Present successfull");
-                }
-                else
-                {
-                    MessageBox.Show("Something went wrong, please try again");
+                case "right the time":
+                    {
+                        if (stbus.Pesent(Login.account.sUsername, currentSubject.subjectId))
+                        {
+                            MessageBox.Show("Present successfull");
+                        }
+                        else
+                        {
+                            MessageBox.Show("You already presented or omething went wrong, please try again");
 
-                }
-            }
-            else
-            {
-                MessageBox.Show("You cannot present this subject for now, it's out of time");
+                        }
+                        break;
+                    }
+                case "late":
+                    {
+                        if (stbus.Pesent(Login.account.sUsername, currentSubject.subjectId, true))
+                        {
+                            MessageBox.Show("Present successfull");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Something went wrong, please try again");
+
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        MessageBox.Show("You cannot present this subject for now, it's out of time");
+                        break;
+                    }
             }
         }
         private void PesentBtn_Click(object sender, EventArgs e)
@@ -357,7 +383,15 @@ namespace GUI
             }
             Application.Exit();
         }
-
+        private void BackToHome()
+        {
+            if (Home.instance == null)
+            {
+                Home.instance = new Home();
+            }
+            Home.instance.Show();
+            this.Hide();
+        }
         private void BackHomeBtn_Click(object sender, EventArgs e)
         {
             isClosing = true;
@@ -365,12 +399,7 @@ namespace GUI
             {
                 videoCapture.Stop();
             }
-            if (Home.instance == null)
-            {
-                Home.instance = new Home();
-            }
-            Home.instance.Show();
-            this.Hide();
+            BackToHome();
         }
 
         private void Pesentation_Activated(object sender, EventArgs e)

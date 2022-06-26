@@ -52,16 +52,30 @@ namespace DTO
             }
         }
         #endregion
-        public bool CheckValidatePesentNow()
+        public string ValidatePesentNow()
         {
-
             DateTime now = DateTime.Now;
             int dayOfWeekNow = (int)now.DayOfWeek;
             if (dayOfWeekNow != this.DayOfWeek)
             {
-                return false;
+                return "out";
             }
-            return TimeStart <= now.TimeOfDay&& TimeEnd>= now.TimeOfDay;
+            if(TimeStart <= now.TimeOfDay && TimeEnd >= now.TimeOfDay)
+            {
+                var newDateTime = now.AddMinutes(30);
+                if (newDateTime.TimeOfDay >= TimeStart)
+                {
+                    return "right the time";
+                }
+                else
+                {
+                    return "late";
+                }
+            }
+            else
+            {
+                return "out";
+            }
         }
     }
 }

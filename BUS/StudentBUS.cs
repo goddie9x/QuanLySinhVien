@@ -41,5 +41,9 @@ namespace BUS
         {
             return DatabaseAccess.HandlePresentation(studentID, subjectID);
         }
+        public bool Pesent(string StudentId, string SubjectId, bool isLate = false)
+        {
+            return DatabaseAccess.Pesent(StudentId, SubjectId, isLate);
+        }
     }
 }

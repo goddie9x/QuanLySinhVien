@@ -15,5 +15,15 @@ namespace BUS
         {
             return DatabaseAccess.GetAllSubjectDataTable();
         }
+        public List<Subject> GetAllSubjectAreLearningThisSemester(string semester)
+        {
+            int semesterInt = int.Parse(semester);
+            return DatabaseAccess.GetAllSubjectAreLearningThisSemester(semesterInt);
+        }
+        public List<Subject> GetAllSubjectAreLearningThisSemesterAndStudentId(string semester, string StudentId)
+        {
+            int semesterInt = int.Parse(semester);
+            return DatabaseAccess.GetAllSubjectAreLearningThisSemesterAndStudentId(semesterInt, StudentId);
+        }
     }
 }
